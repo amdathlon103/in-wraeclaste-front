@@ -11,6 +11,12 @@
 # production
 /build
 
+# target
+/target
+
+# npm cache
+/npm/cache
+
 # misc
 .DS_Store
 .env.local
