@@ -20,7 +20,7 @@ export default class LoginForm extends React.Component {
     buttonClick(event) {
         event.preventDefault();
         console.log(JSON.stringify(this.state));
-        fetch("http://localhost:8080/socback/login/get", {mode: 'no-cors'})
+        fetch("http://localhost:8080/socback/login/get")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -42,14 +42,19 @@ export default class LoginForm extends React.Component {
         //     .then(function (myJson) {
         //         console.log(JSON.stringify(myJson));
         //     });
-        fetch("http://localhost:8080/socback/login/user",{
+        fetch('http://localhost:8080/socback/login/user',{
             method: 'POST',
-            // mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8',
+                Accept: 'application/json',
+                // Some: 'application/json1'
+            },
+            mode: 'no-cors',
             body: '{"password":"1245","login":"debt"}'
         })
             .then(
                 function (response) {
-                    console.log('{"password":"1245","login":"debt"}');
+                    // console.log('{"password":"1245","login":"debt"}');
                     if (response.status !== 200) {
                         console.log('maybe one more time ' + response.status);
                         return;
