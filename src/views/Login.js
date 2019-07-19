@@ -7,10 +7,23 @@ export default class Login extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-4">
-                    <LoginForm/>
+                    <LoginForm cookies={this.props.cookies}/>
                 </div>
             </div>
         )
     }
 
 }
+
+// const mapStateToProps = (state, ownProps) => {
+//     return({
+//         state: state,
+//         cookies: ownProps.cookies,
+//     });
+// };
+// export const LoginContainer = connect(
+//     mapStateToProps,
+//     null
+// )(Login);
+//
+// export default LoginContainer;
