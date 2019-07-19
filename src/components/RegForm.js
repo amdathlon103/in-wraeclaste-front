@@ -1,10 +1,12 @@
 import React from 'react';
 import axios from 'axios';
+import {Redirect} from 'react-router-dom'
 
 export default class RegForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            uurl: "/signup",
             errors: [],
             user: {
                 login: "",
@@ -60,6 +62,9 @@ export default class RegForm extends React.Component {
             const resp = response.data;
             if (!(resp === "OK")) {
                 this.setState({errors: resp})
+                const {cookies} = this.props;
+                cookies.set('USER', this.state.user.login, {path: '/'});
+                this.setState({uurl: "/userinfo"});
 
             } else {
                 console.log('we need redirect here');
@@ -68,6 +73,12 @@ export default class RegForm extends React.Component {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    redirect(url) {
+        return (
+            <Redirect to={url}/>
+        )
     }
 
     renderErrors() {
@@ -89,6 +100,7 @@ export default class RegForm extends React.Component {
         return (
             <div>
                 {this.renderErrors()}
+                {this.redirect(this.state.uurl)}
                 <form className="form-horizontal">
                     <div className="row">
                         <div className="form-group col-md-12">
