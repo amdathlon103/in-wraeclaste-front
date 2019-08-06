@@ -38,28 +38,29 @@ export default class LoginForm extends React.Component {
 
 
     async postReq() {
-        const str = JSON.stringify(this.state.user);
+        const str = btoa(this.state.user.login + ':' + this.state.user.password);
+        const err = ["Wrong login and/or password"];
         try {
             const response = await axios({
                 method: 'POST',
-                url: 'socback/login/user',
-
-                data: str,
+                url: 'http://127.0.0.1:8080/socback/login/user',
+                withCredentials: true,  //IMPORTANT!!!
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Authorization': 'Basic ' + str
+                },
             });
-            const resp = response.data;
-            if (!(resp === "OK")) {
-                this.setState({errors: [resp]});
-            } else {
+            if (response.status === 401) {
+                this.setState({errors: err});
+            } else if (response.status === 200) {
+                console.log(response.headers);
                 const {cookies} = this.props;
-                cookies.set('USER', this.state.user.login, {path: '/'});
-                this.setState({uurl: "/userinfo"});
-                console.log('we need redirect here');
+                cookies.set('USERID', this.state.user.login, {path: '/'});
+                this.setState({uurl: "/userinfo/" + this.state.user.login});
             }
             console.log(this.state);
         } catch (error) {
+            if(error.response.status===401)
+                this.setState({errors: err});
             console.error(error);
         }
     }

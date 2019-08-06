@@ -8,30 +8,29 @@ export default class Index extends React.Component {
 
     render() {
         return (
+            <div className="container">
+                <div className="row justify-content-md-center">
+                    <div className="col"><h1>Welcome!</h1></div>
 
-            <div className="row">
-                <div className="col-md-4">
-                    <div className="row">
-                        <span className="col-md-12 ml-2"><h1>Welcome!</h1></span>
-                    </div>
-                    <div className="row">
-                        <span className="col-md-12 ml-2"><h2>Glad to see you here!</h2></span>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-3">
-                            <Link to="signup" className="btn btn-primary ml-3">Sign
+                </div>
+                <div className="row justify-content-md-center">
+                    <div className="col"><h2>Glad to see you here!</h2></div>
+                </div>
+                <div className="row justify-content-md-center">
+                    {/*<div className="col-8">*/}
+                        <div className="col-2">
+                            <Link to="signup" className="btn btn-primary ">Sign
                                 Up</Link>
                         </div>
-                        <div className="col-md-1"/>
-                        <div className="col-md-3" align="right">
-                            <Link to="list" className="btn btn-primary ml-3">List</Link>
+                        <div className="col-2" >
+                            <Link to="list" className="btn btn-primary ">List</Link>
                         </div>
-                        <div className="col-md-1"/>
-                        <div className="col-md-3" align="right">
-                            <Link to="login" className="btn btn-primary ml-3">Log
+                        {/*<div className="col-sm-1"/>*/}
+                        <div className="col-2" >
+                            <Link to="login" className="btn btn-primary ">Log
                                 In</Link>
                         </div>
-                    </div>
+                    {/*</div>*/}
                 </div>
             </div>
         )

@@ -47,31 +47,61 @@ export default class RegForm extends React.Component {
         }));
     }
 
+    async postSign(url) {
+        const str = btoa(this.state.user.login + ':' + this.state.user.password);
+        try {
+            await axios({
+                method: 'POST',
+                url: url,
+                withCredentials: true,
+                headers: {
+                    'Authorization': 'Basic ' + str,
+                }
+            });
+            return Promise.resolve();
+        } catch (error) {
+
+            console.error(error);
+            return Promise.reject(error);
+        }
+    }
+
     async sign() {
         const str = JSON.stringify(this.state.user);
         try {
-            const response = await axios({
+            await axios({
                 method: 'POST',
-                url: 'socback/signup/sign',
+                url: 'http://127.0.0.1:8080/socback/signup/add',
 
                 data: str,
+                withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-            const resp = response.data;
-            if (!(resp === "OK")) {
-                this.setState({errors: resp})
-                const {cookies} = this.props;
-                cookies.set('USER', this.state.user.login, {path: '/'});
-                this.setState({uurl: "/userinfo"});
+            // const resp = response.data;
+            // if (!(resp === "OK")) {
 
-            } else {
-                console.log('we need redirect here');
-            }
-            console.log(this.state)
+            // const {cookies} = this.props;
+            // cookies.set('USER', this.state.user.login, {path: '/'});
+
+
+            // } else {
+            // if (response.status === 200) {
+            //     this.postSign();
+            //     const {cookies} = this.props;
+            //     cookies.set('USERID', this.state.user.login, {path: '/'});
+            //     this.setState({uurl: "/userinfo/" + this.state.user.login});
+            //     // console.log('we need redirect here');
+            // }
+            // }
+            return Promise.resolve();
+            // console.log(this.state)
         } catch (error) {
+            if (error.response.status === 401)
+                this.setState({errors: [error.response.data]});
             console.error(error);
+            return Promise.reject(error)
         }
     }
 
@@ -89,10 +119,25 @@ export default class RegForm extends React.Component {
         })
     }
 
+    sucRedirect(){
+        this.setState({uurl: "/userinfo/" + this.state.user.login})
+    }
+
+    handleSuccess(){
+        this.postSign("http://127.0.0.1:8080/socback/login/user").then(this.sucRedirect.bind(this),this.handleError());
+        const {cookies} = this.props;
+        cookies.set('USERID', this.state.user.login, {path: '/'});
+    }
+
+    handleError(){
+
+    }
+
     buttonClick(event) {
         event.preventDefault();
         this.setState({errors: []});
-        this.sign();
+        let promise = this.sign();
+        promise.then(this.handleSuccess.bind(this),this.handleError.bind(this));
     }
 
 

@@ -10,21 +10,33 @@ import './App.css';
 import Login from "./views/Login";
 import Regis from "./views/Regis";
 import Index from "./views/Index";
-import List from "./views/List";
+import List from "./components/List";
 import UserInfo from "./views/UserInfo";
 import NoAccess from "./components/NoAccess";
+import TopLine from "./views/TopLine"
+import NotFound from "./components/NotFound";
 
 class App extends Component {
     render() {
         return (
             <div className="App">
+                <TopLine cookies={this.props.cookies}/>
                 <Switch>
                     <Route exact path="/" render={() => (<Index cookies={this.props.cookies}/>)}/>
                     <Route path="/login" render={() => (<Login cookies={this.props.cookies}/>)}/>
                     <Route path="/signup" render={() => (<Regis cookies={this.props.cookies}/>)}/>
                     <Route path="/list" render={() => (<List cookies={this.props.cookies}/>)}/>
-                    <Route path="/userinfo" render={() => (<UserInfo cookies={this.props.cookies}/>)}/>
+                    {/*<Route path="/userinfo" render={() => (<UserInfo cookies={this.props.cookies}/>)}/>*/}
                     <Route path="/noacc" render={() => (<NoAccess cookies={this.props.cookies}/>)}/>
+                    <Route exact path="/userinfo/undefined" component={NotFound}/>
+                    <Route
+                        path="/userinfo/:login"
+                        render={({match}) => {
+                            const login = match.params.login;
+                            return <UserInfo login={login} cookies={this.props.cookies}/>
+                        }}
+                    />
+                    <Route component={NotFound}/>
                 </Switch>
             </div>
         );
