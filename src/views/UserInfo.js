@@ -1,13 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import {Redirect} from "react-router-dom";
+import TopLine from "./TopLine";
 
 export default class UserInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             uurl: "/userinfo/" + props.login,
-            logged: true,
+            logged: false,
             errors: [],
             user: {
                 login: "",
@@ -18,22 +19,22 @@ export default class UserInfo extends React.Component {
     }
 
 
-    async loggedUser(login) {
-        try {
-            const url = 'http://127.0.0.1:8080/socback/userinfo1/' + login;
-            const response = await axios({
-                method: 'GET',
-                url: url,
-                withCredentials: true,
-            });
-            this.setState({user: response.data});
-            return Promise.resolve();
-        } catch (e) {
-            return Promise.reject(e);
-        }
-    }
+    // async loggedUser(login) {
+    //     try {
+    //         const url = 'http://127.0.0.1:8080/socback/userinfo1/' + login;
+    //         const response = await axios({
+    //             method: 'GET',
+    //             url: url,
+    //             withCredentials: true,
+    //         });
+    //         this.setState({user: response.data});
+    //         return Promise.resolve();
+    //     } catch (e) {
+    //         return Promise.reject(e);
+    //     }
+    // }
 
-    async unloggedUser(login) {
+    async loggedUser(login) {
         try {
             const url = 'http://127.0.0.1:8080/socback/userinfo/' + login;
             const response = await axios({
@@ -42,7 +43,10 @@ export default class UserInfo extends React.Component {
                 withCredentials: true,
             });
             if (response.status !== 204) {
+                // console.log(response.headers);
+                this.setState({logged: response.headers.logged});
                 this.setState({user: response.data});
+                // console.log(this.state);
                 return Promise.resolve();
             } else {
                 return Promise.reject();
@@ -54,11 +58,11 @@ export default class UserInfo extends React.Component {
 
     renderInfo() {
         // console.log(this.state)
-        if(this.state.logged){
-            return(
+        if (this.state.logged === 'true') {
+            return (
                 <UserL user={this.state.user}/>
             )
-        }else{
+        } else {
             return (<User user={this.state.user}/>)
         }
     }
@@ -70,7 +74,7 @@ export default class UserInfo extends React.Component {
         // this.renderInfo();
     }
 
-    uFailure() {
+    Failure() {
         this.setState({uurl: '/userinfo/undefined'})
     }
 
@@ -81,15 +85,15 @@ export default class UserInfo extends React.Component {
     componentDidMount() {
         const {login} = this.props;
         // console.log(login);
-        const {cookies} = this.props;
-        const cLogin = cookies.get('USERID');
+        // const {cookies} = this.props;
+        // const cLogin = cookies.get('USERID');
         // console.log(cookies.get('USERID'));
-        if (login === cLogin) {
-            this.loggedUser(login).then(this.Success.bind(this), this.lFailure.bind(this));
-        } else {
-            this.setState({logged:false});
-            this.unloggedUser(login).then(this.Success.bind(this), this.uFailure.bind(this))
-        }
+        // if (login === cLogin) {
+        this.loggedUser(login).then(this.Success.bind(this), this.Failure.bind(this));
+        // } else {
+        //     this.setState({logged:false});
+        //     this.unloggedUser(login).then(this.Success.bind(this), this.uFailure.bind(this))
+        // }
         // if (cookies.get('USER') != null) {
         //     this.getReq();
         // }else{
@@ -104,10 +108,10 @@ export default class UserInfo extends React.Component {
     }
 
 
-
     render() {
         return (
             <div>
+                <TopLine cookies={this.props.cookies}/>
                 {/*{this.auth(this.state.logged)}*/}
                 <div className="row">
                     {this.redirect(this.state.uurl)}

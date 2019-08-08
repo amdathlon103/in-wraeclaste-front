@@ -8,7 +8,7 @@ export default class TopLineForm extends React.Component {
         super(props);
         this.state = {
             username: "",
-            uurl: "/userinfo/"+this.props.cookies.get('USERID', {path: '/'})
+            uurl: "/userinfo/" + this.props.cookies.get('USERID', {path: '/'})
         }
     }
 
@@ -16,7 +16,8 @@ export default class TopLineForm extends React.Component {
     //     try {
     //         const response = await axios({
     //             method: 'GET',
-    //             url: 'socback/login/username',
+    //             url: 'http://127.0.0.1:8080/socback/login/username',
+    //             withCredentials: true,
     //         });
     //         this.setState({username: response.data})
     //     } catch (error) {
@@ -39,17 +40,18 @@ export default class TopLineForm extends React.Component {
 
 
     componentDidMount() {
-        this.setState({username: this.props.cookies.get('USERID', {path: '/'})});
-        // console.log(this.state.username);
-        if(this.state.username!=="")
-        this.setState({uurl: "/userinfo/"+this.props.cookies.get('USERID', {path: '/'})});
-        // console.log(this.state.uurl)
         // this.getReq();
+        this.setState({username: this.props.cookies.get('USERID', {path: '/'})});
+        console.log(this.state.username);
+        if (this.state.username !== "")
+            this.setState({uurl: "/userinfo/" + this.props.cookies.get('USERID', {path: '/'})});
+        console.log(this.state.uurl)
+
     }
 
     handleClick(event) {
         event.preventDefault();
-        const {cookies} =this.props;
+        const {cookies} = this.props;
         cookies.remove('USERID', {path: '/'});
         this.logoutReq();
         this.setState({username: ""});

@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom'
+import TopLine from "../views/TopLine";
 
 export default class RegForm extends React.Component {
     constructor(props) {
@@ -119,17 +120,17 @@ export default class RegForm extends React.Component {
         })
     }
 
-    sucRedirect(){
+    sucRedirect() {
         this.setState({uurl: "/userinfo/" + this.state.user.login})
     }
 
-    handleSuccess(){
-        this.postSign("http://127.0.0.1:8080/socback/login/user").then(this.sucRedirect.bind(this),this.handleError());
+    handleSuccess() {
+        this.postSign("http://127.0.0.1:8080/socback/login/user").then(this.sucRedirect.bind(this), this.handleError());
         const {cookies} = this.props;
         cookies.set('USERID', this.state.user.login, {path: '/'});
     }
 
-    handleError(){
+    handleError() {
 
     }
 
@@ -137,13 +138,14 @@ export default class RegForm extends React.Component {
         event.preventDefault();
         this.setState({errors: []});
         let promise = this.sign();
-        promise.then(this.handleSuccess.bind(this),this.handleError.bind(this));
+        promise.then(this.handleSuccess.bind(this), this.handleError.bind(this));
     }
 
 
     render() {
         return (
             <div>
+                <TopLine cookies={this.props.cookies}/>
                 {this.renderErrors()}
                 {this.redirect(this.state.uurl)}
                 <form className="form-horizontal">

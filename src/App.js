@@ -13,19 +13,20 @@ import Index from "./views/Index";
 import List from "./components/List";
 import UserInfo from "./views/UserInfo";
 import NoAccess from "./components/NoAccess";
-import TopLine from "./views/TopLine"
 import NotFound from "./components/NotFound";
+// import Messages from "./components/chat/Messages";
 
 class App extends Component {
     render() {
         return (
-            <div className="App">
-                <TopLine cookies={this.props.cookies}/>
+
                 <Switch>
+                    {/*<div className="App">*/}
                     <Route exact path="/" render={() => (<Index cookies={this.props.cookies}/>)}/>
                     <Route path="/login" render={() => (<Login cookies={this.props.cookies}/>)}/>
                     <Route path="/signup" render={() => (<Regis cookies={this.props.cookies}/>)}/>
                     <Route path="/list" render={() => (<List cookies={this.props.cookies}/>)}/>
+                    {/*<Route path="/messages" render={()=>(<Messages cookies={this.props.cookies}/>)}/>*/}
                     {/*<Route path="/userinfo" render={() => (<UserInfo cookies={this.props.cookies}/>)}/>*/}
                     <Route path="/noacc" render={() => (<NoAccess cookies={this.props.cookies}/>)}/>
                     <Route exact path="/userinfo/undefined" component={NotFound}/>
@@ -37,8 +38,9 @@ class App extends Component {
                         }}
                     />
                     <Route component={NotFound}/>
+                {/*</div>*/}
                 </Switch>
-            </div>
+
         );
     }
 }

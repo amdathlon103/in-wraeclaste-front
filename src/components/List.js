@@ -2,6 +2,7 @@ import React from 'react';
 import '../bootstrap.css';
 import axios from 'axios';
 import {Link, Redirect} from "react-router-dom";
+import TopLine from "../views/TopLine";
 // import {
 //     Link
 // } from 'react-router-dom';
@@ -83,32 +84,35 @@ export default class List extends React.Component {
 
     render() {
         return (
-            <div className="container">
-                {this.redirect(this.state.uurl)}
-                <div className="row justify-content-md-center">
-                    <h2>List of users</h2>
-                </div>
-                <div className="row justify-content-md-center">
-                    <div className="col-md-auto">
-                        <table className="table">
-                            <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Login</th>
-                                <th>Password</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {this.renderUsers()}
-                            </tbody>
-                        </table>
+            <div>
+                <TopLine cookies={this.props.cookies}/>
+                <div className="container">
+                    {this.redirect(this.state.uurl)}
+                    <div className="row justify-content-md-center">
+                        <h2>List of users</h2>
                     </div>
-                </div>
-                <div className="row justify-content-md-center">
-                    <button className="btn btn-primary mr-3" onClick={this.refresh.bind(this)}>Refresh</button>
-                    <Link to="" className="btn btn-primary mr-3">Get back</Link>
+                    <div className="row justify-content-md-center">
+                        <div className="col-md-auto">
+                            <table className="table">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Login</th>
+                                    <th>Password</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {this.renderUsers()}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div className="row justify-content-md-center">
+                        <button className="btn btn-primary mr-3" onClick={this.refresh.bind(this)}>Refresh</button>
+                        <Link to="" className="btn btn-primary mr-3">Get back</Link>
+                    </div>
                 </div>
             </div>
         )

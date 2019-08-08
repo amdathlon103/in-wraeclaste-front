@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {Link, Redirect} from "react-router-dom";
+import TopLine from "../views/TopLine";
 
 export default class LoginForm extends React.Component {
     constructor(props) {
@@ -88,6 +89,7 @@ export default class LoginForm extends React.Component {
     render() {
         return (
             <div>
+                <TopLine cookies={this.props.cookies}/>
                 {this.renderErrors()}
                 {this.redirect(this.state.uurl)}
                 <form className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
