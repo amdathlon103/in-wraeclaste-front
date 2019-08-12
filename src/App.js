@@ -14,6 +14,7 @@ import List from "./components/List";
 import UserInfo from "./views/UserInfo";
 import NoAccess from "./components/NoAccess";
 import NotFound from "./components/NotFound";
+import Chat from "./chat/Chat";
 // import Messages from "./components/chat/Messages";
 
 class App extends Component {
@@ -26,7 +27,7 @@ class App extends Component {
                     <Route path="/login" render={() => (<Login cookies={this.props.cookies}/>)}/>
                     <Route path="/signup" render={() => (<Regis cookies={this.props.cookies}/>)}/>
                     <Route path="/list" render={() => (<List cookies={this.props.cookies}/>)}/>
-                    {/*<Route path="/messages" render={()=>(<Messages cookies={this.props.cookies}/>)}/>*/}
+                    <Route path="/messages" render={()=>(<Chat cookies={this.props.cookies}/>)}/>
                     {/*<Route path="/userinfo" render={() => (<UserInfo cookies={this.props.cookies}/>)}/>*/}
                     <Route path="/noacc" render={() => (<NoAccess cookies={this.props.cookies}/>)}/>
                     <Route exact path="/userinfo/undefined" component={NotFound}/>
