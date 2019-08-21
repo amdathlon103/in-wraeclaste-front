@@ -3,6 +3,8 @@ import '../bootstrap.css';
 import axios from 'axios';
 import {Link, Redirect} from "react-router-dom";
 import TopLine from "../views/TopLine";
+import NewTopbar from "../views/NewTopbar";
+import {Toolbar} from "@material-ui/core";
 // import {
 //     Link
 // } from 'react-router-dom';
@@ -85,7 +87,8 @@ export default class List extends React.Component {
     render() {
         return (
             <div>
-                <TopLine cookies={this.props.cookies}/>
+                <NewTopbar cookies={this.props.cookies} pageName="Users' list"/>
+                {/*<Toolbar />*/}
                 <div className="container">
                     {this.redirect(this.state.uurl)}
                     <div className="row justify-content-md-center">
