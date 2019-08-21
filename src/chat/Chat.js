@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import ChatInput from './ChatInput'
 import ChatMessage from './ChatMessage'
 import Loading from './Loading'
-import TopLine from "../views/TopLine";
+import NewTopbar from "../views/NewTopbar";
 
 // const URL = 'http://localhost:8080/socback/ws'
 
@@ -12,6 +12,7 @@ class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            classes: props.classes,
             username: '',
             channelConnected: false,
             broadcastMessage: [],
@@ -186,32 +187,36 @@ class Chat extends Component {
 
     render() {
         return (
-            <div>
-                <TopLine cookies={this.props.cookies}/>
-                {this.state.channelConnected ?
-                    (
-                        <div>
-                            <label htmlFor="name">
-                                Name:&nbsp;
-                                {this.state.username}
-                            </label>
-                            <ChatInput
-                                sendMessage={this.sendMessage}
-                            />
-                            {this.state.broadcastMessage.map((message, index) =>
-                                <ChatMessage
-                                    key={index}
-                                    message={message.message}
-                                    name={message.sender}
-                                    time={message.dateTime}
-                                />,
-                            )}
-                        </div>
-                    ):
-                    (
-                        <Loading/>
-                    )
-                }
+            <div className={this.state.classes.root}>
+                <NewTopbar cookies={this.props.cookies}/>
+                <main className={this.state.classes.content}>
+                    <div className={this.state.classes.toolbar}/>
+                    {this.state.channelConnected ?
+                        (
+                            <div>
+                                <label htmlFor="name">
+                                    Name:&nbsp;
+                                    {this.state.username}
+                                </label>
+
+                                {this.state.broadcastMessage.map((message, index) =>
+                                    <ChatMessage
+                                        key={index}
+                                        message={message.message}
+                                        name={message.sender}
+                                        time={message.dateTime}
+                                    />,
+                                )}
+                                <ChatInput
+                                    sendMessage={this.sendMessage}
+                                />
+                            </div>
+                        ) :
+                        (
+                            <Loading/>
+                        )
+                    }
+                </main>
             </div>
         )
     }

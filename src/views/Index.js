@@ -1,42 +1,60 @@
 import React from 'react';
-import '../bootstrap.css';
-import {
-    Link
-} from 'react-router-dom';
-import TopLine from "./TopLine";
+import {makeStyles} from '@material-ui/core/styles';
+import IndexForm from "../components/IndexForm";
+// import AppBar from '@material-ui/core/AppBar';
+// import Toolbar from '@material-ui/core/Toolbar';
+// import Typography from '@material-ui/core/Typography';
+// import IconButton from '@material-ui/core/IconButton';
+// import MenuIcon from '@material-ui/icons/Menu';
+// import AccountCircle from '@material-ui/icons/AccountCircle';
+// import Switch from '@material-ui/core/Switch';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import FormGroup from '@material-ui/core/FormGroup';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import Menu from '@material-ui/core/Menu';
 
-export default class Index extends React.Component {
 
-    render() {
-        return (
-            <div>
-                <TopLine cookies={this.props.cookies}/>
-                <div className="container">
-                    <div className="row justify-content-md-center">
-                        <div className="col"><h1>Welcome!</h1></div>
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: 'flex',
+    },
+    toolbar: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: '0 8px',
+        ...theme.mixins.toolbar,
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+    },
+}));
 
-                    </div>
-                    <div className="row justify-content-md-center">
-                        <div className="col"><h2>Glad to see you here!</h2></div>
-                    </div>
-                    <div className="row justify-content-md-center">
-                        {/*<div className="col-8">*/}
-                        <div className="col-2">
-                            <Link to="signup" className="btn btn-primary ">Sign
-                                Up</Link>
-                        </div>
-                        <div className="col-2">
-                            <Link to="list" className="btn btn-primary ">List</Link>
-                        </div>
-                        {/*<div className="col-sm-1"/>*/}
-                        <div className="col-2">
-                            <Link to="login" className="btn btn-primary ">Log
-                                In</Link>
-                        </div>
-                        {/*</div>*/}
-                    </div>
-                </div>
-            </div>
-        )
-    }
+
+
+
+export default function Index(props) {
+    const classes = useStyles();
+    // const theme = useTheme();
+    // const [auth, setAuth] = React.useState(true);
+    // const [anchorEl, setAnchorEl] = React.useState(null);
+    // const open = Boolean(anchorEl);
+
+    // function handleChange(event) {
+    //     setAuth(event.target.checked);
+    // }
+    //
+    // function handleMenu(event) {
+    //     setAnchorEl(event.currentTarget);
+    // }
+    //
+    // function handleClose() {
+    //     setAnchorEl(null);
+    // }
+
+
+    return (
+        <IndexForm classes={classes} cookies={props.cookies} />
+    );
 }

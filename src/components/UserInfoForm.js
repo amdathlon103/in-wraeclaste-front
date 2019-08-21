@@ -8,10 +8,11 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import {Toolbar} from "@material-ui/core";
 
-export default class UserInfo extends React.Component {
+export default class UserInfoForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            classes: props.classes,
             uurl: "/userinfo/" + props.login,
             logged: false,
             errors: [],
@@ -112,24 +113,23 @@ export default class UserInfo extends React.Component {
         )
     }
 
-    classes=useStyles();
 
     render() {
 
 
         return (
-            <div className={this.classes.root}>
+            <div className={this.state.classes.root}>
 
                 <NewTopbar cookies={this.props.cookies} pageName="Profile"/>
                 {/*{this.auth(this.state.logged)}*/}
-                <main className={this.classes.content}>
-                    <div className={this.classes.toolbar} />
+                <main className={this.state.classes.content}>
+                    <div className={this.state.classes.toolbar} />
                     <Paper>
                         <div className="row">
                             {this.redirect(this.state.uurl)}
                             <div className="col-md-auto">
                                 <div className="row">
-                                    <span className="col-md-12 ml-2"><h2 className={this.classes.boop}>You provided the following data:</h2></span>
+                                    <span className="col-md-12 ml-2"><h2>You provided the following data:</h2></span>
                                 </div>
                                 {this.renderInfo()}
                                 <div className="row">
@@ -180,23 +180,3 @@ function User(props) {
         </div>
     )
 }
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-    },
-    boop: {
-        color: '#007bff',
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-    },
-    toolbar: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-    },
-}));

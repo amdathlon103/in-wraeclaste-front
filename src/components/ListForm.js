@@ -9,10 +9,11 @@ import {Toolbar} from "@material-ui/core";
 //     Link
 // } from 'react-router-dom';
 
-export default class List extends React.Component {
+export default class ListForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            classes: props.classes,
             uurl: "/list",
             users: []
         }
@@ -86,9 +87,11 @@ export default class List extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className={this.state.classes.root}>
                 <NewTopbar cookies={this.props.cookies} pageName="Users' list"/>
                 {/*<Toolbar />*/}
+                <main className={this.state.classes.content}>
+                    <div className={this.state.classes.toolbar}/>
                 <div className="container">
                     {this.redirect(this.state.uurl)}
                     <div className="row justify-content-md-center">
@@ -117,6 +120,7 @@ export default class List extends React.Component {
                         <Link to="" className="btn btn-primary mr-3">Get back</Link>
                     </div>
                 </div>
+                </main>
             </div>
         )
     }
