@@ -158,49 +158,49 @@ export default class TopLineForm extends React.Component {
                         className={clsx(this.state.classes.appBar, {
                             [this.state.classes.appBarShift]: this.state.open,
                         })}>
-                    <Toolbar>
-                        <IconButton edge="start"
-                                    className={this.state.classes.menuButton}
-                                    color="inherit"
-                                    aria-label="menu"
-                                    aria-controls="menu-appbar"
-                                    aria-haspopup="true"
-                                    className={clsx(this.state.classes.menuButton, {
-                                        [this.state.classes.hide]: this.state.open,
-                                    })}
-                                    onClick={this.handleDrawerOpen.bind(this)}
+                    {this.state.logged ? (
+                            <Toolbar>
+                                <IconButton edge="start"
+                                            className={this.state.classes.menuButton}
+                                            color="inherit"
+                                            aria-label="menu"
+                                            aria-controls="menu-appbar"
+                                            aria-haspopup="true"
+                                            className={clsx(this.state.classes.menuButton, {
+                                                [this.state.classes.hide]: this.state.open,
+                                            })}
+                                            onClick={this.handleDrawerOpen.bind(this)}
 
-                        >
-                            <MenuIcon/>
-                        </IconButton>
-                        {/*<Menu*/}
-                        {/*    id="menu-appbar"*/}
-                        {/*    anchorEl={this.state.anchorEll}*/}
-                        {/*    anchorOrigin={{*/}
-                        {/*        vertical: 'top',*/}
-                        {/*        horizontal: 'left',*/}
-                        {/*    }}*/}
-                        {/*    keepMounted*/}
-                        {/*    transformOrigin={{*/}
-                        {/*        vertical: 'top',*/}
-                        {/*        horizontal: 'left',*/}
-                        {/*    }}*/}
-                        {/*    open={Boolean(this.state.anchorEll)}*/}
-                        {/*    onClose={this.handleCloseMenu.bind(this)}*/}
-                        {/*>*/}
-                        {/*    <MenuItem onClick={this.redirectHome.bind(this)}>Home</MenuItem>*/}
-                        {/*    <MenuItem onClick={this.redirectInfo.bind(this)}>Profile</MenuItem>*/}
-                        {/*    <MenuItem onClick={this.redirectList.bind(this)}>Users</MenuItem>*/}
-                        {/*    <MenuItem onClick={this.redirectChat.bind(this)}>Messages</MenuItem>*/}
+                                >
+                                    <MenuIcon/>
+                                </IconButton>
+                                {/*<Menu*/}
+                                {/*    id="menu-appbar"*/}
+                                {/*    anchorEl={this.state.anchorEll}*/}
+                                {/*    anchorOrigin={{*/}
+                                {/*        vertical: 'top',*/}
+                                {/*        horizontal: 'left',*/}
+                                {/*    }}*/}
+                                {/*    keepMounted*/}
+                                {/*    transformOrigin={{*/}
+                                {/*        vertical: 'top',*/}
+                                {/*        horizontal: 'left',*/}
+                                {/*    }}*/}
+                                {/*    open={Boolean(this.state.anchorEll)}*/}
+                                {/*    onClose={this.handleCloseMenu.bind(this)}*/}
+                                {/*>*/}
+                                {/*    <MenuItem onClick={this.redirectHome.bind(this)}>Home</MenuItem>*/}
+                                {/*    <MenuItem onClick={this.redirectInfo.bind(this)}>Profile</MenuItem>*/}
+                                {/*    <MenuItem onClick={this.redirectList.bind(this)}>Users</MenuItem>*/}
+                                {/*    <MenuItem onClick={this.redirectChat.bind(this)}>Messages</MenuItem>*/}
 
-                        {/*</Menu>*/}
-                        <Typography variant="h6" className={this.state.classes.title}>
-                            {this.state.pageName}
-                        </Typography>
-                        <Typography variant="subtitle1">
-                            {this.state.username}
-                        </Typography>
-                        {this.state.logged ? (
+                                {/*</Menu>*/}
+                                <Typography variant="h6" className={this.state.classes.title}>
+                                    {this.state.pageName}
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    {this.state.username}
+                                </Typography>
                                 <div>
                                     <IconButton
                                         aria-label="account of current user"
@@ -232,9 +232,14 @@ export default class TopLineForm extends React.Component {
                                         <MenuItem onClick={this.handleLogout.bind(this)}>Logout</MenuItem>
                                     </Menu>
                                 </div>
-                            )
-                            :
-                            (
+                            </Toolbar>
+                        )
+                        :
+                        (
+                            <Toolbar>
+                                <Typography variant="h6" className={this.state.classes.title}>
+                                    {this.state.pageName}
+                                </Typography>
                                 <div>
                                     {/*<Button color="inherit" onClick={this.redirectLogin.bind(this)}>Login</Button>*/}
                                     {/*<Menu*/}
@@ -256,60 +261,66 @@ export default class TopLineForm extends React.Component {
                                     {/*    <MenuItem onClick={this.handleCloseAcc.bind(this)}>My account</MenuItem>*/}
                                     {/*</Menu>*/}
                                 </div>
-                            )}
-                    </Toolbar>
-                </AppBar>
+                            </Toolbar>
+                        )}
 
-                <Drawer
-                    variant="permanent"
-                    className={clsx(this.state.classes.drawer, {
-                        [this.state.classes.drawerOpen]: this.state.open,
-                        [this.state.classes.drawerClose]: !this.state.open,
-                    })}
-                    classes={{
-                        paper: clsx({
+                </AppBar>
+                {this.state.logged ?
+                    (<Drawer
+                        variant="permanent"
+                        className={clsx(this.state.classes.drawer, {
                             [this.state.classes.drawerOpen]: this.state.open,
                             [this.state.classes.drawerClose]: !this.state.open,
-                        }),
-                    }}
-                    open={this.state.open}
-                >
-                    <div className={this.state.classes.toolbar}>
-                        <IconButton onClick={this.handleDrawerClose.bind(this)}>
-                            {this.state.theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
-                        </IconButton>
-                    </div>
-                    <Divider/>
-                    <List>
-                        <ListItem button onClick={this.redirectInfo.bind(this)}>
-                            <ListItemIcon><Person/></ListItemIcon>
-                            <ListItemText primary="My account"/>
-                        </ListItem>
-                        <ListItem button onClick={this.redirectChat.bind(this)}>
-                            <ListItemIcon><MailIcon/></ListItemIcon>
-                            <ListItemText primary="Messages"/>
-                        </ListItem>
-                        <ListItem button onClick={this.redirectList.bind(this)}>
-                            <ListItemIcon><Group/></ListItemIcon>
-                            <ListItemText primary="Users"/>
-                        </ListItem>
-                        {/*{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (*/}
-                        {/*    <ListItem button key={text}>*/}
-                        {/*        <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>*/}
-                        {/*        <ListItemText primary={text}/>*/}
-                        {/*    </ListItem>*/}
-                        {/*))}*/}
-                    </List>
-                    {/*<Divider/>*/}
-                    {/*<List>*/}
-                    {/*    {['All mail', 'Trash', 'Spam'].map((text, index) => (*/}
-                    {/*        <ListItem button key={text}>*/}
-                    {/*            <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>*/}
-                    {/*            <ListItemText primary={text}/>*/}
-                    {/*        </ListItem>*/}
-                    {/*    ))}*/}
-                    {/*</List>*/}
-                </Drawer>
+                        })}
+                        classes={{
+                            paper: clsx({
+                                [this.state.classes.drawerOpen]: this.state.open,
+                                [this.state.classes.drawerClose]: !this.state.open,
+                            }),
+                        }}
+                        open={this.state.open}
+                    >
+                        <div className={this.state.classes.toolbar}>
+                            <IconButton onClick={this.handleDrawerClose.bind(this)}>
+                                {this.state.theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
+                            </IconButton>
+                        </div>
+                        <Divider/>
+                        <List>
+                            <ListItem button onClick={this.redirectInfo.bind(this)}>
+                                <ListItemIcon><Person/></ListItemIcon>
+                                <ListItemText primary="My account"/>
+                            </ListItem>
+                            <ListItem button onClick={this.redirectList.bind(this)}>
+                                <ListItemIcon><Group/></ListItemIcon>
+                                <ListItemText primary="Users"/>
+                            </ListItem>
+                            <ListItem button onClick={this.redirectChat.bind(this)}>
+                                <ListItemIcon><MailIcon/></ListItemIcon>
+                                <ListItemText primary="Messages"/>
+                            </ListItem>
+                            {/*{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (*/}
+                            {/*    <ListItem button key={text}>*/}
+                            {/*        <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>*/}
+                            {/*        <ListItemText primary={text}/>*/}
+                            {/*    </ListItem>*/}
+                            {/*))}*/}
+                        </List>
+                        <Divider/>
+                        <List>
+                            {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                                <ListItem button key={text}>
+                                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
+                                    <ListItemText primary={text}/>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Drawer>)
+                    :
+                    (
+                        <div/>
+                    )
+                }
                 {/*<Toolbar/>*/}
 
             </div>
