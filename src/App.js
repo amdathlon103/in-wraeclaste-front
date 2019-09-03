@@ -16,8 +16,11 @@ import NoAccess from "./components/NoAccess";
 import NotFound from "./components/NotFound";
 import NewLogin from "./views/NewLogin";
 import NewSignup from "./views/NewSignup";
-import NewToolbar from "./views/NewTopbar";
 import Messages from "./views/Messages";
+import FriendList from "./views/FriendList";
+import Profile from "./views/Profile";
+import InfoEdit from "./views/InfoEdit";
+
 
 class App extends Component {
     render() {
@@ -26,14 +29,16 @@ class App extends Component {
                 <Switch>
                     {/*<div className="App">*/}
                     <Route exact path="/" render={() => (<Index cookies={this.props.cookies}/>)}/>
-                    <Route path="/testing" render={() => (<NewToolbar cookies={this.props.cookies}/>)}/>
+                    <Route path="/testing" render={() => (<InfoEdit cookies={this.props.cookies}/>)}/>
                     <Route path="/login" render={() => (<NewLogin cookies={this.props.cookies}/>)}/>
                     <Route path="/signup" render={() => (<NewSignup cookies={this.props.cookies}/>)}/>
-                    <Route path="/list" render={() => (<List cookies={this.props.cookies}/>)}/>
+                    <Route path="/friendlist" render={() => (<FriendList cookies={this.props.cookies}/>)}/>
                     <Route path="/messages" render={()=>(<Messages cookies={this.props.cookies}/>)}/>
                     {/*<Route path="/userinfo" render={() => (<UserInfo cookies={this.props.cookies}/>)}/>*/}
                     <Route path="/noacc" render={() => (<NoAccess cookies={this.props.cookies}/>)}/>
-                    <Route exact path="/userinfo/undefined" component={NotFound}/>
+                    <Route path="/admin/list" render={() => (<List cookies={this.props.cookies}/>)}/>
+                    <Route exact path="/userinfo/undefined" render={()=>(<NotFound cookies={this.props.cookies}/>)}/>
+                    <Route path="/edit" render={() => (<InfoEdit cookies={this.props.cookies}/>)}/>
                     <Route
                         path="/userinfo/:login"
                         render={({match}) => {
@@ -41,7 +46,14 @@ class App extends Component {
                             return <UserInfo login={login} cookies={this.props.cookies}/>
                         }}
                     />
-                    <Route component={NotFound}/>
+                    <Route
+                        path="/profile/:login"
+                        render={({match}) => {
+                            const login = match.params.login;
+                            return <Profile login={login} cookies={this.props.cookies}/>
+                        }}
+                    />
+                    <Route render={()=>(<NotFound cookies={this.props.cookies}/>)}/>
                 {/*</div>*/}
                 </Switch>
 

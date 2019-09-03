@@ -21,13 +21,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Group from '@material-ui/icons/Group';
 import Person from '@material-ui/icons/Person';
-import Button from "@material-ui/core/Button";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger/useScrollTrigger";
-import {Slide} from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 
 export default class TopLineForm extends React.Component {
@@ -42,7 +38,8 @@ export default class TopLineForm extends React.Component {
             pageName: props.pageName,
             anchorEl: null,
             redirect: false,
-            open: false
+            open: false,
+            role: "",
         }
     }
 
@@ -75,13 +72,16 @@ export default class TopLineForm extends React.Component {
 
     componentDidMount() {
         // this.getReq();
-        this.setState({username: this.props.cookies.get('USERID', {path: '/'})});
-        // console.log(this.state.username);
-        if (this.state.username !== "")
-            this.setState({uurl: "/userinfo/" + this.props.cookies.get('USERID', {path: '/'})});
         // console.log(this.state.uurl);
+        const role = this.props.cookies.get('USERROLE', {path: '/'});
+        if (role !== undefined)
+            this.setState({role: role});
         if (this.props.cookies.get('USERID', {path: '/'}) !== undefined) {
             this.setState({logged: true});
+            this.setState({username: this.props.cookies.get('USERID', {path: '/'})});
+            // console.log(this.state.username);
+            if (this.state.username !== "")
+                this.setState({uurl: "/userinfo/" + this.props.cookies.get('USERID', {path: '/'})});
         }
     }
 
@@ -90,6 +90,7 @@ export default class TopLineForm extends React.Component {
         this.handleCloseAcc();
         const {cookies} = this.props;
         cookies.remove('USERID', {path: '/'});
+        cookies.remove('USERROLE', {path: '/'});
         this.logoutReq();
         this.setState({username: ""});
         this.setState({logged: false});
@@ -106,7 +107,7 @@ export default class TopLineForm extends React.Component {
 
 
     redirectInfo() {
-        this.setState({uurl: "/userinfo/" + this.props.cookies.get('USERID', {path: '/'})});
+        this.setState({uurl: "/profile/" + this.props.cookies.get('USERID', {path: '/'})});
         this.setState({redirect: true})
     }
 
@@ -124,8 +125,8 @@ export default class TopLineForm extends React.Component {
         this.setState({open: false})
     }
 
-    redirectLogin() {
-        this.setState({uurl: "/login"});
+    redirectTesting() {
+        this.setState({uurl: "/testing"});
         this.setState({redirect: true})
     }
 
@@ -134,8 +135,18 @@ export default class TopLineForm extends React.Component {
         this.setState({redirect: true})
     }
 
+    redirectFriendList() {
+        this.setState({uurl: "/friendlist"});
+        this.setState({redirect: true})
+    }
+
+    redirectEdit() {
+        this.setState({uurl: "/edit"});
+        this.setState({redirect: true})
+    }
+
     redirectList() {
-        this.setState({uurl: "/list"});
+        this.setState({uurl: "/admin/list"});
         this.setState({redirect: true})
     }
 
@@ -161,7 +172,6 @@ export default class TopLineForm extends React.Component {
                     {this.state.logged ? (
                             <Toolbar>
                                 <IconButton edge="start"
-                                            className={this.state.classes.menuButton}
                                             color="inherit"
                                             aria-label="menu"
                                             aria-controls="menu-appbar"
@@ -227,6 +237,7 @@ export default class TopLineForm extends React.Component {
                                         onClose={this.handleCloseAcc.bind(this)}
                                     >
                                         <MenuItem onClick={this.redirectInfo.bind(this)}>Profile</MenuItem>
+                                        <MenuItem onClick={this.redirectEdit.bind(this)}>Edit</MenuItem>
                                         <Divider/>
                                         {/*<MenuItem onClick={this.handleClose.bind(this)}>My account</MenuItem>*/}
                                         <MenuItem onClick={this.handleLogout.bind(this)}>Logout</MenuItem>
@@ -291,9 +302,9 @@ export default class TopLineForm extends React.Component {
                                 <ListItemIcon><Person/></ListItemIcon>
                                 <ListItemText primary="My account"/>
                             </ListItem>
-                            <ListItem button onClick={this.redirectList.bind(this)}>
+                            <ListItem button onClick={this.redirectFriendList.bind(this)}>
                                 <ListItemIcon><Group/></ListItemIcon>
-                                <ListItemText primary="Users"/>
+                                <ListItemText primary="Friends"/>
                             </ListItem>
                             <ListItem button onClick={this.redirectChat.bind(this)}>
                                 <ListItemIcon><MailIcon/></ListItemIcon>
@@ -306,15 +317,24 @@ export default class TopLineForm extends React.Component {
                             {/*    </ListItem>*/}
                             {/*))}*/}
                         </List>
-                        <Divider/>
-                        <List>
-                            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                                <ListItem button key={text}>
-                                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
-                                    <ListItemText primary={text}/>
-                                </ListItem>
-                            ))}
-                        </List>
+                        {this.state.role === "ADMIN" ?
+
+                            (<div>
+                                <Divider/>
+                                <List>
+                                    <ListItem button onClick={this.redirectList.bind(this)}>
+                                        <ListItemIcon><Group/></ListItemIcon>
+                                        <ListItemText primary="Users"/>
+                                    </ListItem>
+                                    <ListItem button onClick={this.redirectTesting.bind(this)}>
+                                        <ListItemIcon><Group/></ListItemIcon>
+                                        <ListItemText primary="Testing"/>
+                                    </ListItem>
+                                </List>
+                            </div>)
+                            :
+                            (<Divider/>)
+                        }
                     </Drawer>)
                     :
                     (

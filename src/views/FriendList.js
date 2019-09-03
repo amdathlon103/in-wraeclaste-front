@@ -1,6 +1,6 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import IndexForm from "../components/IndexForm";
+import FriendListForm from "../components/FriendListForm";
 // import AppBar from '@material-ui/core/AppBar';
 // import Toolbar from '@material-ui/core/Toolbar';
 // import Typography from '@material-ui/core/Typography';
@@ -17,6 +17,8 @@ import IndexForm from "../components/IndexForm";
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
     },
     toolbar: {
         display: 'flex',
@@ -29,21 +31,31 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         padding: theme.spacing(3),
     },
-    margin: {
-        margin: theme.spacing(1),
+    card: {
+        width: 220,
+        height: 200,
+        margin: 5,
     },
-    popover: {
-        pointerEvents: 'none',
+    bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
     },
-    paper: {
-        padding: theme.spacing(1),
+    title: {
+        fontSize: 14,
+    },
+    pos: {
+        marginBottom: 12,
+    },
+    gridList: {
+        justifyContent: 'center',
     },
 }));
 
 
 
 
-export default function Index(props) {
+export default function FriendList(props) {
     const classes = useStyles();
     // const theme = useTheme();
     // const [auth, setAuth] = React.useState(true);
@@ -64,6 +76,6 @@ export default function Index(props) {
 
 
     return (
-        <IndexForm classes={classes} cookies={props.cookies} />
+        <FriendListForm classes={classes} cookies={props.cookies} />
     );
 }

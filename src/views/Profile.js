@@ -1,6 +1,6 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import IndexForm from "../components/IndexForm";
+import ProfileForm from "../components/ProfileForm";
 // import AppBar from '@material-ui/core/AppBar';
 // import Toolbar from '@material-ui/core/Toolbar';
 // import Typography from '@material-ui/core/Typography';
@@ -17,6 +17,8 @@ import IndexForm from "../components/IndexForm";
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
     },
     toolbar: {
         display: 'flex',
@@ -29,21 +31,60 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         padding: theme.spacing(3),
     },
-    margin: {
-        margin: theme.spacing(1),
+    card: {
+        // width: 400,
+        // height: 400,
+        margin: 5,
     },
-    popover: {
-        pointerEvents: 'none',
+    infoCard: {
+      maxWidth: 600,
+        // height: 820,
+        margin: 5,
     },
-    paper: {
-        padding: theme.spacing(1),
+    bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+    },
+    title: {
+        fontSize: 16,
+    },
+    pos: {
+        marginBottom: 12,
+    },
+    gridList: {
+        // width: 850,
+        // height: 650,
+        // justifyContent: 'flex-start',
+        justifyContent: 'center',
+    },
+    gridTile: {
+        justifyContent: 'center',
+    },
+    avatar: {
+        // width: 400,
+        height: 400,
+    },
+    subTitle: {
+        marginLeft: 25,
+        fontSize: 16,
+    },
+    info: {
+        fontSize: 16,
+        color: "#6c757d"
+    },
+    // spanInfo: {
+    //     // marginLeft: 25,
+    //     fontSize: 16,
+    // },
+    quoteAuthor:{
+        textAlign: "right",
+        fontSize: 16,
     },
 }));
 
 
-
-
-export default function Index(props) {
+export default function Profile(props) {
     const classes = useStyles();
     // const theme = useTheme();
     // const [auth, setAuth] = React.useState(true);
@@ -64,6 +105,6 @@ export default function Index(props) {
 
 
     return (
-        <IndexForm classes={classes} cookies={props.cookies} />
+        <ProfileForm classes={classes} cookies={props.cookies} login={props.login}/>
     );
 }

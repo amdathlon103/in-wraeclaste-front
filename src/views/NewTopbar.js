@@ -12,8 +12,6 @@ import {makeStyles, useTheme} from '@material-ui/core/styles';
 // import MenuItem from '@material-ui/core/MenuItem';
 // import Menu from '@material-ui/core/Menu';
 import NewTopbarForm from '../components/NewTopbarForm'
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import {Toolbar, Slide} from "@material-ui/core";
 
 const drawerWidth = 240;
 

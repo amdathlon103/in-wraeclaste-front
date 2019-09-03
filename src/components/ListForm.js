@@ -1,20 +1,16 @@
 import React from 'react';
 import '../bootstrap.css';
 import axios from 'axios';
-import {Link, Redirect} from "react-router-dom";
-import TopLine from "../views/TopLine";
+import { Redirect} from "react-router-dom";
 import NewTopbar from "../views/NewTopbar";
-import {Toolbar} from "@material-ui/core";
-// import {
-//     Link
-// } from 'react-router-dom';
+
 
 export default class ListForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             classes: props.classes,
-            uurl: "/list",
+            uurl: "/admin/list",
             users: []
         }
     }
@@ -41,13 +37,13 @@ export default class ListForm extends React.Component {
         try {
             const response = await axios({
                 method: 'GET',
-                url: 'http://127.0.0.1:8080/socback/login/getList',
+                url: 'http://127.0.0.1:8080/socback/admin/getList',
                 withCredentials: true
             });
             if (response.status === 200) {
                 this.setState({users: response.data});
             }
-            console.log(this.state);
+            // console.log(this.state);
         } catch (e) {
             if (e.response.status === 401 || e.response.status === 403)
                 return Promise.reject(e);
@@ -114,10 +110,6 @@ export default class ListForm extends React.Component {
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                    <div className="row justify-content-md-center">
-                        <button className="btn btn-primary mr-3" onClick={this.refresh.bind(this)}>Refresh</button>
-                        <Link to="" className="btn btn-primary mr-3">Get back</Link>
                     </div>
                 </div>
                 </main>

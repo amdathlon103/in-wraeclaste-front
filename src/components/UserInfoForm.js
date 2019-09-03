@@ -1,12 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import {Redirect} from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
-import TopLine from "../views/TopLine";
 import NewTopbar from "../views/NewTopbar";
-import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
-import {Toolbar} from "@material-ui/core";
 
 export default class UserInfoForm extends React.Component {
     constructor(props) {
@@ -17,6 +13,7 @@ export default class UserInfoForm extends React.Component {
             logged: false,
             errors: [],
             user: {
+                id:"",
                 login: "",
                 password: "",
                 email: ""
@@ -149,6 +146,9 @@ export default class UserInfoForm extends React.Component {
 function UserL(props) {
     return (
         <div>
+            <div className="row">
+                <div className="col-md-12 ml-2"><strong>Id: </strong>{props.user.id}</div>
+            </div>
             <div className="row">
                 <div className="col-md-12 ml-2"><strong>Login: </strong> {props.user.login}</div>
             </div>

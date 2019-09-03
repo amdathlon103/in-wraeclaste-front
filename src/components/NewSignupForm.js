@@ -43,7 +43,8 @@ export default class RegForm extends React.Component {
             user: {
                 login: "",
                 password: "",
-                email: ""
+                email: "",
+                name: ""
             },
             classes: props.classes,
         }
@@ -70,6 +71,16 @@ export default class RegForm extends React.Component {
         }));
     }
 
+    handleNameChanged(event) {
+        const str = event.target.value;
+        this.setState(prevState => ({
+            user: {
+                ...prevState.user,
+                name: str
+            }
+        }));
+    }
+
     handleEmailChanged(event) {
         const str = event.target.value;
         this.setState(prevState => ({
@@ -81,12 +92,12 @@ export default class RegForm extends React.Component {
     }
 
 
-    async postSign(url) {
+    async postSign() {
         const str = btoa(this.state.user.login + ':' + this.state.user.password);
         try {
             await axios({
                 method: 'POST',
-                url: url,
+                url: "http://127.0.0.1:8080/socback/login/user",
                 withCredentials: true,
                 headers: {
                     'Authorization': 'Basic ' + str,
@@ -133,7 +144,7 @@ export default class RegForm extends React.Component {
     }
 
     handleSuccess() {
-        this.postSign("http://127.0.0.1:8080/socback/login/user").then(this.sucRedirect.bind(this), this.handleError());
+        this.postSign().then(this.sucRedirect.bind(this), this.handleError());
         const {cookies} = this.props;
         cookies.set('USERID', this.state.user.login, {path: '/'});
     }
@@ -170,7 +181,7 @@ export default class RegForm extends React.Component {
                             <Typography component="h1" variant="h5">
                                 Sign up
                             </Typography>
-                            <form className={this.state.classes.form} noValidate>
+                            <form className={this.state.classes.form}>
                                 {this.state.errors === '' ?
                                     (
                                         <Grid container spacing={2}>
@@ -197,7 +208,7 @@ export default class RegForm extends React.Component {
                                                     label="Email Address"
                                                     name="email"
                                                     autoComplete="email"
-                                                    value={this.state.email}
+                                                    value={this.state.user.email}
                                                     onChange={this.handleEmailChanged.bind(this)}
                                                 />
                                             </Grid>
@@ -211,8 +222,20 @@ export default class RegForm extends React.Component {
                                                     type="password"
                                                     id="password"
                                                     autoComplete="current-password"
-                                                    value={this.state.password}
+                                                    value={this.state.user.password}
                                                     onChange={this.handlePasswordChanged.bind(this)}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    variant="outlined"
+                                                    required
+                                                    fullWidth
+                                                    name="fname"
+                                                    label="Full name"
+                                                    id="fname"
+                                                    value={this.state.user.name}
+                                                    onChange={this.handleNameChanged.bind(this)}
                                                 />
                                             </Grid>
                                         </Grid>)
@@ -244,7 +267,7 @@ export default class RegForm extends React.Component {
                                                         label="Email Address"
                                                         name="email"
                                                         autoComplete="email"
-                                                        value={this.state.email}
+                                                        value={this.state.user.email}
                                                         onChange={this.handleEmailChanged.bind(this)}
                                                     />
                                                 </Grid>
@@ -258,8 +281,20 @@ export default class RegForm extends React.Component {
                                                         type="password"
                                                         id="password"
                                                         autoComplete="current-password"
-                                                        value={this.state.password}
+                                                        value={this.state.user.password}
                                                         onChange={this.handlePasswordChanged.bind(this)}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <TextField
+                                                        variant="outlined"
+                                                        required
+                                                        fullWidth
+                                                        name="fname"
+                                                        label="Full name"
+                                                        id="fname"
+                                                        value={this.state.user.name}
+                                                        onChange={this.handleNameChanged.bind(this)}
                                                     />
                                                 </Grid>
                                                 {/*<FormHelperText id="component-error-text" error>{this.state.errors}</FormHelperText>*/}
@@ -292,7 +327,7 @@ export default class RegForm extends React.Component {
                                                         label="Email Address"
                                                         name="email"
                                                         autoComplete="email"
-                                                        value={this.state.email}
+                                                        value={this.state.user.email}
                                                         onChange={this.handleEmailChanged.bind(this)}
                                                         helperText={this.state.errors}
                                                     />
@@ -307,8 +342,20 @@ export default class RegForm extends React.Component {
                                                         type="password"
                                                         id="password"
                                                         autoComplete="current-password"
-                                                        value={this.state.password}
+                                                        value={this.state.user.password}
                                                         onChange={this.handlePasswordChanged.bind(this)}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <TextField
+                                                        variant="outlined"
+                                                        required
+                                                        fullWidth
+                                                        name="fname"
+                                                        label="Full name"
+                                                        id="fname"
+                                                        value={this.state.user.name}
+                                                        onChange={this.handleNameChanged.bind(this)}
                                                     />
                                                 </Grid>
                                                 {/*<FormHelperText id="component-error-text" error>{this.state.errors}</FormHelperText>*/}
