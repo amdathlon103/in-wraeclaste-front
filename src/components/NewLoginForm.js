@@ -93,7 +93,7 @@ export default class NewLoginForm extends React.Component {
                 if (this.state.role === 'ADMIN')
                     cookies.set('USERROLE','ADMIN', {path: '/'});
                 cookies.set('USERID', this.state.user.login, {path: '/'});
-                this.setState({uurl: "/userinfo/" + this.state.user.login});
+                this.setState({uurl: "/profile/" + this.state.user.login});
             }
             // console.log(this.state);
         } catch (error) {

@@ -46,6 +46,7 @@ export default class RegForm extends React.Component {
                 email: "",
                 name: ""
             },
+            role:"",
             classes: props.classes,
         }
     }
@@ -91,25 +92,53 @@ export default class RegForm extends React.Component {
         }));
     }
 
-
     async postSign() {
         const str = btoa(this.state.user.login + ':' + this.state.user.password);
+        const data = JSON.stringify(this.state.user);
         try {
-            await axios({
+            const response = await axios({
                 method: 'POST',
-                url: "http://127.0.0.1:8080/socback/login/user",
-                withCredentials: true,
+                url: 'http://127.0.0.1:8080/socback/login/user',
+                withCredentials: true,  //IMPORTANT!!!
                 headers: {
-                    'Authorization': 'Basic ' + str,
-                }
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + str
+                },
+                data: data,
             });
-            return Promise.resolve();
+             if (response.status === 200) {
+                this.setState({role: response.data.body});
+                const {cookies} = this.props;
+                if (this.state.role === 'ADMIN')
+                    cookies.set('USERROLE','ADMIN', {path: '/'});
+                return Promise.resolve();
+            }
+            // console.log(this.state);
         } catch (error) {
-
-            console.error(error);
             return Promise.reject(error);
+            // if (error.response.status === 401)
+            console.error(error);
         }
     }
+
+    // async postSign() {
+    //     const str = btoa(this.state.user.login + ':' + this.state.user.password);
+    //     try {
+    //         await axios({
+    //             method: 'POST',
+    //             url: "http://127.0.0.1:8080/socback/login/user",
+    //             withCredentials: true,
+    //             headers: {
+    //                 'Authorization': 'Basic ' + str,
+    //             }
+    //         });
+    //         return Promise.resolve();
+    //     } catch (error) {
+    //
+    //         console.error(error);
+    //         return Promise.reject(error);
+    //     }
+    // }
 
     async sign() {
         const str = JSON.stringify(this.state.user);
@@ -140,7 +169,7 @@ export default class RegForm extends React.Component {
     }
 
     sucRedirect() {
-        this.setState({uurl: "/userinfo/" + this.state.user.login})
+        this.setState({uurl: "/profile/" + this.state.user.login})
     }
 
     handleSuccess() {

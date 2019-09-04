@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Build from '@material-ui/icons/Build';
+import AssignmentInd from '@material-ui/icons/AssignmentInd'
 // import Switch from '@material-ui/core/Switch';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import FormGroup from '@material-ui/core/FormGroup';
@@ -323,11 +325,11 @@ export default class TopLineForm extends React.Component {
                                 <Divider/>
                                 <List>
                                     <ListItem button onClick={this.redirectList.bind(this)}>
-                                        <ListItemIcon><Group/></ListItemIcon>
+                                        <ListItemIcon><AssignmentInd/></ListItemIcon>
                                         <ListItemText primary="Users"/>
                                     </ListItem>
                                     <ListItem button onClick={this.redirectTesting.bind(this)}>
-                                        <ListItemIcon><Group/></ListItemIcon>
+                                        <ListItemIcon><Build/></ListItemIcon>
                                         <ListItemText primary="Testing"/>
                                     </ListItem>
                                 </List>

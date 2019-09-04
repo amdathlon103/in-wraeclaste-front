@@ -45,7 +45,7 @@ export default class FriendListForm extends React.Component {
 
     redirectFriend(login){
         // console.log(login)
-        this.setState({uurl: "/userinfo/" + login})
+        this.setState({uurl: "/profile/" + login})
     }
 
     redirect(url) {

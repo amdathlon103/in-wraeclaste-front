@@ -1,7 +1,7 @@
 import React from 'react';
 import '../bootstrap.css';
 import axios from 'axios';
-import { Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import NewTopbar from "../views/NewTopbar";
 
 
@@ -54,7 +54,7 @@ export default class ListForm extends React.Component {
     renderUsers() {
         return this.state.users.map(user => {
             return (
-                <User user={user} key={user.id}/>
+                <User user={user} key={user.id} handleSwap={this.handleSwap.bind(this)}/>
             )
         })
     }
@@ -80,6 +80,42 @@ export default class ListForm extends React.Component {
     refresh() {
         this.getReq().then(this.nice.bind(this), this.fail.bind(this));
     }
+    swapNice(){
+        this.refresh();
+    }
+
+    swapBad(){}
+
+    handleSwap(user){
+        // console.log(user);
+        this.swapReq(user).then(this.swapNice.bind(this),this.swapBad.bind(this))
+    }
+
+    async swapReq(user) {
+        const data=JSON.stringify(user);
+        try {
+            const response = await axios({
+                method: 'POST',
+                url: 'http://127.0.0.1:8080/socback/admin/swap',
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: data,
+
+            });
+            if (response.data.status === 1) {
+                return Promise.resolve();
+            }
+            else{
+                console.log(response.data.errors);
+                return Promise.reject();
+            }
+            // console.log(this.state);
+        } catch (e) {
+                return Promise.reject(e);
+        }
+    }
 
     render() {
         return (
@@ -88,30 +124,30 @@ export default class ListForm extends React.Component {
                 {/*<Toolbar />*/}
                 <main className={this.state.classes.content}>
                     <div className={this.state.classes.toolbar}/>
-                <div className="container">
-                    {this.redirect(this.state.uurl)}
-                    <div className="row justify-content-md-center">
-                        <h2>List of users</h2>
-                    </div>
-                    <div className="row justify-content-md-center">
-                        <div className="col-md-auto">
-                            <table className="table">
-                                <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Login</th>
-                                    <th>Password</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {this.renderUsers()}
-                                </tbody>
-                            </table>
+                    <div className="container">
+                        {this.redirect(this.state.uurl)}
+                        <div className="row justify-content-md-center">
+                            <h2>List of users</h2>
+                        </div>
+                        <div className="row justify-content-md-center">
+                            <div className="col-md-auto">
+                                <table className="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Login</th>
+                                        <th>Password</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {this.renderUsers()}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </main>
             </div>
         )
@@ -121,6 +157,10 @@ export default class ListForm extends React.Component {
 }
 
 function User(props) {
+    const rUser={
+        login: props.user.login,
+        password: props.user.password
+    };
     return (
         <tr>
             <td>{props.user.id}</td>
@@ -128,6 +168,12 @@ function User(props) {
             <td>{props.user.password}</td>
             <td>{props.user.email}</td>
             <td>{props.user.role}</td>
+            <td>
+                <button className="btn"
+                        onClick={() => props.handleSwap(rUser)}
+                >Swap role
+                </button>
+            </td>
         </tr>
     )
 }

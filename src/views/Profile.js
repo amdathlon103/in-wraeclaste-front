@@ -41,6 +41,10 @@ const useStyles = makeStyles(theme => ({
         // height: 820,
         margin: 5,
     },
+    button: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
     bullet: {
         display: 'inline-block',
         margin: '0 2px',

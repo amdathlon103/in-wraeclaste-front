@@ -17,6 +17,8 @@ import GridListTile from "@material-ui/core/GridListTile";
 import Avatar from "../avatar.jpg"
 import CardMedia from "@material-ui/core/CardMedia";
 import Divider from "@material-ui/core/Divider";
+import Input from "@material-ui/core/Input";
+import Button from "@material-ui/core/Button";
 // import Link from "@material-ui/core/Link";
 // import {Toolbar} from "@material-ui/core";
 
@@ -28,6 +30,7 @@ export default class ProfileForm extends React.Component {
             uurl: "/profile/" + props.login,
             logged: false,
             errors: [],
+            edit: false,
             user: {
                 login: "",
                 password: "",
@@ -127,6 +130,9 @@ export default class ProfileForm extends React.Component {
 
 
     Success() {
+        if(this.state.info.status === ""){
+            this.setState({edit:true});
+        }
         // console.log(this.state);
         // this.renderInfo();
     }
@@ -157,6 +163,16 @@ export default class ProfileForm extends React.Component {
         //     this.setState({uurl: "/noacc"});
         // }
 
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {login} = this.props;  //TODO:
+        // console.log(login);
+        // const {cookies} = this.props;
+        // const cLogin = cookies.get('USERID');
+        // console.log(cookies.get('USERID'));
+        // if (login === cLogin) {
+        this.loggedUser(login).then(this.Success.bind(this), this.Failure.bind(this)); //TODO:
     }
 
     redirect(url) {
@@ -197,7 +213,7 @@ export default class ProfileForm extends React.Component {
                         <GridListTile rows={2} cols={1}>
                             <Card className={this.state.classes.infoCard}>
                                 <CardContent>
-                                    <User info={this.state.info} classes={this.state.classes}/>
+                                    <User info={this.state.info} classes={this.state.classes} edit={this.state.edit}/>
                                 </CardContent>
                             </Card>
                         </GridListTile>
@@ -236,9 +252,30 @@ function User(props) {
             <Typography variant="h5" component="h2">
                 {props.info.name}
             </Typography>
-            <Typography className={props.classes.title} color="textSecondary" gutterBottom>
-                {props.info.status}
-            </Typography>
+            {props.edit ?
+                (
+                    <div>
+                    <Input
+                        placeholder={"Enter your status"}
+                        // className={classes.input}
+                        // inputProps={{
+                        //     'aria-label': 'description',
+                        // }}
+                    />
+                        <Button>Edit</Button>
+                    </div>
+                )
+                :
+                (
+                    <div>
+                    <Typography className={props.classes.title} color="textSecondary" gutterBottom>
+                        {props.info.status}
+                        <Button>Edit</Button>
+                    </Typography>
+
+                    </div>
+                )
+            }
             {props.info.block1 ?
                 (<div>
                     <Divider/>

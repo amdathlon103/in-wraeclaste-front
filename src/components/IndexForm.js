@@ -22,7 +22,7 @@ export default class IndexForm extends React.Component {
 
     componentDidMount() {
         if (this.props.cookies.get('USERID', {path: '/'}) !== undefined)
-            this.setState({uurl: "/userinfo/" + this.props.cookies.get('USERID', {path: '/'})});
+            this.setState({uurl: "/profile/" + this.props.cookies.get('USERID', {path: '/'})});
     }
 
     handlePopoverOpenSign(event) {

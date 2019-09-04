@@ -33,11 +33,6 @@ import {
 } from '@material-ui/pickers';
 import Popover from "@material-ui/core/Popover";
 
-class LocalizedUtils extends DateFnsUtils {
-    getCalendarHeaderText(date) {
-        return format(date, "dd/mm/yyyy", {locale: this.locale});
-    }
-}
 
 export default class InfoEditForm extends React.Component {
     constructor(props) {
