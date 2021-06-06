@@ -30,7 +30,7 @@ export default class ProfileForm extends React.Component {
             uurl: "/profile/" + props.login,
             logged: false,
             errors: [],
-            edit: false,
+            edit: "",
             user: {
                 login: "",
                 password: "",
@@ -51,9 +51,7 @@ export default class ProfileForm extends React.Component {
             //     vk: "lev__iss",
             //     block3: true,
             //     music: "different",
-            //     about: "Art and life really are the same, and both can only be about a spiritual journey, a path towards a re-union with a supreme creator, " +
-            //         "with god, with the divine; and this is true no matter how unlikely, how strange, how unorthodox, one’s particular life path might appear " +
-            //         "to one’s self or others at any given moment. – Genesis P-Orridge",
+            //     about: "I am creator of this abomination :3",
             // }
             info: {
                 id: "",
@@ -107,8 +105,6 @@ export default class ProfileForm extends React.Component {
                 // console.log(response.data.body);
                 // console.log(this.state);
                 return Promise.resolve();
-            } else if (response.data.status === 2) {
-                //TODO info edit here!
             } else {
                 return Promise.reject();
             }
@@ -130,11 +126,14 @@ export default class ProfileForm extends React.Component {
 
 
     Success() {
-        if(this.state.info.status === ""){
-            this.setState({edit:true});
+        console.log(this.props.login);
+        if (this.props.login === this.props.cookies.get('USERID', {path: '/'})) {
+            if (this.state.info.status === "") {
+                this.setState({edit: "empty"});
+            } else {
+                this.setState({edit: "edit"});
+            }
         }
-        // console.log(this.state);
-        // this.renderInfo();
     }
 
     Failure() {
@@ -145,34 +144,26 @@ export default class ProfileForm extends React.Component {
 
     }
 
-    componentDidMount() {
-        const {login} = this.props;  //TODO:
-        // console.log(login);
-        // const {cookies} = this.props;
-        // const cLogin = cookies.get('USERID');
-        // console.log(cookies.get('USERID'));
-        // if (login === cLogin) {
-        this.loggedUser(login).then(this.Success.bind(this), this.Failure.bind(this)); //TODO:
-        // } else {
-        //     this.setState({logged:false});
-        //     this.unloggedUser(login).then(this.Success.bind(this), this.uFailure.bind(this))
-        // }
-        // if (cookies.get('USER') != null) {
-        //     this.getReq();
-        // }else{
-        //     this.setState({uurl: "/noacc"});
-        // }
-
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.login !== this.props.login) {
+            const {login} = nextProps;
+            this.setState({
+                user: {
+                    login: login,
+                }
+            });
+            this.loggedUser(login).then(this.Success.bind(this), this.Failure.bind(this));
+        }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const {login} = this.props;  //TODO:
-        // console.log(login);
-        // const {cookies} = this.props;
-        // const cLogin = cookies.get('USERID');
-        // console.log(cookies.get('USERID'));
-        // if (login === cLogin) {
-        this.loggedUser(login).then(this.Success.bind(this), this.Failure.bind(this)); //TODO:
+    componentDidMount() {
+        const {login} = this.props;
+        this.setState({
+            user: {
+                login: login,
+            }
+        });
+        this.loggedUser(login).then(this.Success.bind(this), this.Failure.bind(this));
     }
 
     redirect(url) {
@@ -252,29 +243,37 @@ function User(props) {
             <Typography variant="h5" component="h2">
                 {props.info.name}
             </Typography>
-            {props.edit ?
+            {props.edit === "empty" ?
                 (
                     <div>
-                    <Input
-                        placeholder={"Enter your status"}
-                        // className={classes.input}
-                        // inputProps={{
-                        //     'aria-label': 'description',
-                        // }}
-                    />
+                        <Input
+                            placeholder={"Enter your status"}
+                            // className={classes.input}
+                            // inputProps={{
+                            //     'aria-label': 'description',
+                            // }}
+                        />
                         <Button>Edit</Button>
                     </div>
                 )
-                :
-                (
-                    <div>
-                    <Typography className={props.classes.title} color="textSecondary" gutterBottom>
-                        {props.info.status}
-                        <Button>Edit</Button>
-                    </Typography>
+                : props.edit === "edit" ?
+                    (
+                        <div>
+                            <Typography className={props.classes.title} color="textSecondary" gutterBottom>
+                                {props.info.status}
+                                <Button>Edit</Button>
+                            </Typography>
 
-                    </div>
-                )
+                        </div>
+                    )
+                    :
+                    (
+                        <div>
+                            <Typography className={props.classes.title} color="textSecondary" gutterBottom>
+                                {props.info.status}
+                            </Typography>
+                        </div>
+                    )
             }
             {props.info.block1 ?
                 (<div>

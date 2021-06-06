@@ -25,6 +25,10 @@ const useStyles = makeStyles(theme => ({
         padding: '0 8px',
         ...theme.mixins.toolbar,
     },
+    title: {
+        color: 'blue',
+        fontWeight: 700,
+    },
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),

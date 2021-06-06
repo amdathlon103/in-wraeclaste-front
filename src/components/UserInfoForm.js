@@ -13,7 +13,7 @@ export default class UserInfoForm extends React.Component {
             logged: false,
             errors: [],
             user: {
-                id:"",
+                id: "",
                 login: "",
                 password: "",
                 email: ""
@@ -45,10 +45,10 @@ export default class UserInfoForm extends React.Component {
                 url: url,
                 withCredentials: true,
             });
-            if (response.status !== 204) {
+            if (response.data.status !== 2 && response.data.status !== 3) {
                 // console.log(response.headers);
                 this.setState({logged: response.headers.logged});
-                this.setState({user: response.data});
+                this.setState({user: response.data.body});
                 // console.log(this.state);
                 return Promise.resolve();
             } else {
@@ -120,7 +120,7 @@ export default class UserInfoForm extends React.Component {
                 <NewTopbar cookies={this.props.cookies} pageName="Profile"/>
                 {/*{this.auth(this.state.logged)}*/}
                 <main className={this.state.classes.content}>
-                    <div className={this.state.classes.toolbar} />
+                    <div className={this.state.classes.toolbar}/>
                     <Paper>
                         <div className="row">
                             {this.redirect(this.state.uurl)}

@@ -39,14 +39,14 @@ export default class RegForm extends React.Component {
         super(props);
         this.state = {
             uurl: "/signup",
-            errors: '',
+            errors: [],
             user: {
                 login: "",
                 password: "",
                 email: "",
                 name: ""
             },
-            role:"",
+            role: "",
             classes: props.classes,
         }
     }
@@ -106,18 +106,17 @@ export default class RegForm extends React.Component {
                 },
                 data: data,
             });
-             if (response.status === 200) {
+            if (response.status === 200) {
                 this.setState({role: response.data.body});
                 const {cookies} = this.props;
                 if (this.state.role === 'ADMIN')
-                    cookies.set('USERROLE','ADMIN', {path: '/'});
+                    cookies.set('USERROLE', 'ADMIN', {path: '/'});
                 return Promise.resolve();
             }
             // console.log(this.state);
         } catch (error) {
             return Promise.reject(error);
             // if (error.response.status === 401)
-            console.error(error);
         }
     }
 
@@ -143,7 +142,7 @@ export default class RegForm extends React.Component {
     async sign() {
         const str = JSON.stringify(this.state.user);
         try {
-            await axios({
+            const response = await axios({
                 method: 'POST',
                 url: 'http://127.0.0.1:8080/socback/signup/add',
 
@@ -153,11 +152,13 @@ export default class RegForm extends React.Component {
                     'Content-Type': 'application/json'
                 }
             });
-            return Promise.resolve();
+            if (response.data.status === 1)
+                return Promise.resolve();
+            else {
+                this.setState({errors: response.data.errors});
+                return Promise.reject();
+            }
         } catch (error) {
-            if (error.response.status === 401)
-                this.setState({errors: error.response.data});
-            console.error(error);
             return Promise.reject(error)
         }
     }
@@ -211,9 +212,9 @@ export default class RegForm extends React.Component {
                                 Sign up
                             </Typography>
                             <form className={this.state.classes.form}>
-                                {this.state.errors === '' ?
-                                    (
-                                        <Grid container spacing={2}>
+                                <Grid container spacing={2}>
+                                    {!this.state.errors.includes("This login is already taken!") ?
+                                        (
                                             <Grid item xs={12}>
                                                 <TextField
                                                     autoComplete="login"
@@ -228,6 +229,27 @@ export default class RegForm extends React.Component {
                                                     onChange={this.handleLoginChanged.bind(this)}
                                                 />
                                             </Grid>
+                                        ) : (
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    error
+                                                    autoComplete="login"
+                                                    name="login"
+                                                    variant="outlined"
+                                                    required
+                                                    fullWidth
+                                                    id="login"
+                                                    label="Login"
+                                                    autoFocus
+                                                    value={this.state.user.login}
+                                                    onChange={this.handleLoginChanged.bind(this)}
+                                                    helperText={"This login is already taken!"}
+                                                />
+                                            </Grid>
+                                        )
+                                    }
+                                    {!this.state.errors.includes("This E-mail is already taken!") ?
+                                        (
                                             <Grid item xs={12}>
                                                 <TextField
                                                     variant="outlined"
@@ -241,156 +263,173 @@ export default class RegForm extends React.Component {
                                                     onChange={this.handleEmailChanged.bind(this)}
                                                 />
                                             </Grid>
+                                        ) : (
                                             <Grid item xs={12}>
                                                 <TextField
+                                                    error
                                                     variant="outlined"
                                                     required
                                                     fullWidth
-                                                    name="password"
-                                                    label="Password"
-                                                    type="password"
-                                                    id="password"
-                                                    autoComplete="current-password"
-                                                    value={this.state.user.password}
-                                                    onChange={this.handlePasswordChanged.bind(this)}
+                                                    id="email"
+                                                    label="Email Address"
+                                                    name="email"
+                                                    autoComplete="email"
+                                                    value={this.state.user.email}
+                                                    onChange={this.handleEmailChanged.bind(this)}
+                                                    helperText={"This E-mail is already taken!"}
                                                 />
                                             </Grid>
-                                            <Grid item xs={12}>
-                                                <TextField
-                                                    variant="outlined"
-                                                    required
-                                                    fullWidth
-                                                    name="fname"
-                                                    label="Full name"
-                                                    id="fname"
-                                                    value={this.state.user.name}
-                                                    onChange={this.handleNameChanged.bind(this)}
-                                                />
-                                            </Grid>
-                                        </Grid>)
-                                    : this.state.errors === 'This login is already taken!' ?
-                                        (
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={12}>
-                                                    <TextField
-                                                        error
-                                                        autoComplete="login"
-                                                        name="login"
-                                                        variant="outlined"
-                                                        required
-                                                        fullWidth
-                                                        id="login"
-                                                        label="Login"
-                                                        autoFocus
-                                                        value={this.state.user.login}
-                                                        onChange={this.handleLoginChanged.bind(this)}
-                                                        helperText={this.state.errors}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12}>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        required
-                                                        fullWidth
-                                                        id="email"
-                                                        label="Email Address"
-                                                        name="email"
-                                                        autoComplete="email"
-                                                        value={this.state.user.email}
-                                                        onChange={this.handleEmailChanged.bind(this)}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12}>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        required
-                                                        fullWidth
-                                                        name="password"
-                                                        label="Password"
-                                                        type="password"
-                                                        id="password"
-                                                        autoComplete="current-password"
-                                                        value={this.state.user.password}
-                                                        onChange={this.handlePasswordChanged.bind(this)}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12}>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        required
-                                                        fullWidth
-                                                        name="fname"
-                                                        label="Full name"
-                                                        id="fname"
-                                                        value={this.state.user.name}
-                                                        onChange={this.handleNameChanged.bind(this)}
-                                                    />
-                                                </Grid>
-                                                {/*<FormHelperText id="component-error-text" error>{this.state.errors}</FormHelperText>*/}
-                                            </Grid>
                                         )
-                                        :
-                                        (
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={12}>
-                                                    <TextField
-                                                        autoComplete="login"
-                                                        name="login"
-                                                        variant="outlined"
-                                                        required
-                                                        fullWidth
-                                                        id="login"
-                                                        label="Login"
-                                                        autoFocus
-                                                        value={this.state.user.login}
-                                                        onChange={this.handleLoginChanged.bind(this)}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12}>
-                                                    <TextField
-                                                        error
-                                                        variant="outlined"
-                                                        required
-                                                        fullWidth
-                                                        id="email"
-                                                        label="Email Address"
-                                                        name="email"
-                                                        autoComplete="email"
-                                                        value={this.state.user.email}
-                                                        onChange={this.handleEmailChanged.bind(this)}
-                                                        helperText={this.state.errors}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12}>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        required
-                                                        fullWidth
-                                                        name="password"
-                                                        label="Password"
-                                                        type="password"
-                                                        id="password"
-                                                        autoComplete="current-password"
-                                                        value={this.state.user.password}
-                                                        onChange={this.handlePasswordChanged.bind(this)}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12}>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        required
-                                                        fullWidth
-                                                        name="fname"
-                                                        label="Full name"
-                                                        id="fname"
-                                                        value={this.state.user.name}
-                                                        onChange={this.handleNameChanged.bind(this)}
-                                                    />
-                                                </Grid>
-                                                {/*<FormHelperText id="component-error-text" error>{this.state.errors}</FormHelperText>*/}
-                                            </Grid>
-                                        )
-                                }
+                                    }
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            name="password"
+                                            label="Password"
+                                            type="password"
+                                            id="password"
+                                            autoComplete="current-password"
+                                            value={this.state.user.password}
+                                            onChange={this.handlePasswordChanged.bind(this)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            name="fname"
+                                            label="Full name"
+                                            id="fname"
+                                            value={this.state.user.name}
+                                            onChange={this.handleNameChanged.bind(this)}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                {/*</Grid>)*/}
+                                {/*: this.state.errors === 'This login is already taken!' ?*/}
+                                {/*(*/}
+                                {/*<Grid container spacing={2}>*/}
+                                {/*    <Grid item xs={12}>*/}
+                                {/*        <TextField*/}
+                                {/*            error*/}
+                                {/*            autoComplete="login"*/}
+                                {/*            name="login"*/}
+                                {/*            variant="outlined"*/}
+                                {/*            required*/}
+                                {/*            fullWidth*/}
+                                {/*            id="login"*/}
+                                {/*            label="Login"*/}
+                                {/*            autoFocus*/}
+                                {/*            value={this.state.user.login}*/}
+                                {/*            onChange={this.handleLoginChanged.bind(this)}*/}
+                                {/*            helperText={this.state.errors}*/}
+                                {/*        />*/}
+                                {/*    </Grid>*/}
+                                {/*    <Grid item xs={12}>*/}
+                                {/*        <TextField*/}
+                                {/*            variant="outlined"*/}
+                                {/*            required*/}
+                                {/*            fullWidth*/}
+                                {/*            id="email"*/}
+                                {/*            label="Email Address"*/}
+                                {/*            name="email"*/}
+                                {/*            autoComplete="email"*/}
+                                {/*            value={this.state.user.email}*/}
+                                {/*            onChange={this.handleEmailChanged.bind(this)}*/}
+                                {/*        />*/}
+                                {/*    </Grid>*/}
+                                {/*    <Grid item xs={12}>*/}
+                                {/*        <TextField*/}
+                                {/*            variant="outlined"*/}
+                                {/*            required*/}
+                                {/*            fullWidth*/}
+                                {/*            name="password"*/}
+                                {/*            label="Password"*/}
+                                {/*            type="password"*/}
+                                {/*            id="password"*/}
+                                {/*            autoComplete="current-password"*/}
+                                {/*            value={this.state.user.password}*/}
+                                {/*            onChange={this.handlePasswordChanged.bind(this)}*/}
+                                {/*        />*/}
+                                {/*    </Grid>*/}
+                                {/*    <Grid item xs={12}>*/}
+                                {/*        <TextField*/}
+                                {/*            variant="outlined"*/}
+                                {/*            required*/}
+                                {/*            fullWidth*/}
+                                {/*            name="fname"*/}
+                                {/*            label="Full name"*/}
+                                {/*            id="fname"*/}
+                                {/*            value={this.state.user.name}*/}
+                                {/*            onChange={this.handleNameChanged.bind(this)}*/}
+                                {/*        />*/}
+                                {/*    </Grid>*/}
+                                {/*    /!*<FormHelperText id="component-error-text" error>{this.state.errors}</FormHelperText>*!/*/}
+                                {/*</Grid>*/}
+                                {/*)*/}
+                                {/*:*/}
+                                {/*(*/}
+                                {/*<Grid container spacing={2}>*/}
+                                {/*    <Grid item xs={12}>*/}
+                                {/*        <TextField*/}
+                                {/*            autoComplete="login"*/}
+                                {/*            name="login"*/}
+                                {/*            variant="outlined"*/}
+                                {/*            required*/}
+                                {/*            fullWidth*/}
+                                {/*            id="login"*/}
+                                {/*            label="Login"*/}
+                                {/*            autoFocus*/}
+                                {/*            value={this.state.user.login}*/}
+                                {/*            onChange={this.handleLoginChanged.bind(this)}*/}
+                                {/*        />*/}
+                                {/*    </Grid>*/}
+                                {/*    <Grid item xs={12}>*/}
+                                {/*        <TextField*/}
+                                {/*            error*/}
+                                {/*            variant="outlined"*/}
+                                {/*            required*/}
+                                {/*            fullWidth*/}
+                                {/*            id="email"*/}
+                                {/*            label="Email Address"*/}
+                                {/*            name="email"*/}
+                                {/*            autoComplete="email"*/}
+                                {/*            value={this.state.user.email}*/}
+                                {/*            onChange={this.handleEmailChanged.bind(this)}*/}
+                                {/*            helperText={this.state.errors}*/}
+                                {/*        />*/}
+                                {/*    </Grid>*/}
+                                {/*    <Grid item xs={12}>*/}
+                                {/*        <TextField*/}
+                                {/*            variant="outlined"*/}
+                                {/*            required*/}
+                                {/*            fullWidth*/}
+                                {/*            name="password"*/}
+                                {/*            label="Password"*/}
+                                {/*            type="password"*/}
+                                {/*            id="password"*/}
+                                {/*            autoComplete="current-password"*/}
+                                {/*            value={this.state.user.password}*/}
+                                {/*            onChange={this.handlePasswordChanged.bind(this)}*/}
+                                {/*        />*/}
+                                {/*    </Grid>*/}
+                                {/*    <Grid item xs={12}>*/}
+                                {/*        <TextField*/}
+                                {/*            variant="outlined"*/}
+                                {/*            required*/}
+                                {/*            fullWidth*/}
+                                {/*            name="fname"*/}
+                                {/*            label="Full name"*/}
+                                {/*            id="fname"*/}
+                                {/*            value={this.state.user.name}*/}
+                                {/*            onChange={this.handleNameChanged.bind(this)}*/}
+                                {/*        />*/}
+                                {/*    </Grid>*/}
+                                {/*<FormHelperText id="component-error-text" error>{this.state.errors}</FormHelperText>*/}
+
                                 {/*<Grid item xs={12}>*/}
                                 {/*    <FormControlLabel*/}
                                 {/*        control={<Checkbox value="allowExtraEmails" color="primary" />}*/}

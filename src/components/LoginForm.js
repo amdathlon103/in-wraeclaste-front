@@ -54,6 +54,7 @@ export default class LoginForm extends React.Component {
                 this.setState({errors: err});
             } else if (response.status === 200) {
                 console.log(response.headers);
+                console.log(response.cookies.toString());
                 const {cookies} = this.props;
                 cookies.set('USERID', this.state.user.login, {path: '/'});
                 this.setState({uurl: "/userinfo/" + this.state.user.login});

@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
         margin: 5,
     },
     infoCard: {
-      maxWidth: 600,
+        maxWidth: 600,
         // height: 820,
         margin: 5,
     },
@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme => ({
     //     // marginLeft: 25,
     //     fontSize: 16,
     // },
-    quoteAuthor:{
+    quoteAuthor: {
         textAlign: "right",
         fontSize: 16,
     },
@@ -91,7 +91,6 @@ const useStyles = makeStyles(theme => ({
 export default function Profile(props) {
     const classes = useStyles();
     // const theme = useTheme();
-    // const [auth, setAuth] = React.useState(true);
     // const [anchorEl, setAnchorEl] = React.useState(null);
     // const open = Boolean(anchorEl);
 

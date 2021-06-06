@@ -63,6 +63,7 @@ export default class IndexForm extends React.Component {
                 <main className={this.state.classes.content}>
                     <div className={this.state.classes.toolbar}/>
                     <Container align="center">
+                        <Typography variant="h2" className={this.state.classes.title}>V Wreclaste</Typography>
                         <Typography variant="h2">Welcome!</Typography>
                         <Typography variant="h4">Glad to see you here!</Typography>
                         {/*<div className="col-8">*/}
